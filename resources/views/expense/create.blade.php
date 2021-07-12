@@ -3,12 +3,12 @@
 @section('content')
 <div class="row">
     <div class="col">
-        <h1>New report</h1>
+        <h1>Nuevo Gasto...</h1>
     </div>
 </div>
 <div class="row">
     <div class="col">
-        <a class="btn btn-secondary" href="/expense_reports">Back</a>
+        <a class="btn btn-secondary" href="/expense_reports/{{$report->id}}">Back</a>
     </div>
 </div>
 <div class="row">
@@ -24,11 +24,15 @@
             </ul>
         </div>
         @endif
-        <form action="/expense_reports" method="post">
+        <form action="/expense_reports/{{$report->id}}/expenses" method="post">
             @csrf
             <div class="form-group">
-                <label for="title">Titulo:</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="escribe un titulo" value="{{old('title')}}">
+                <label for="description">Descripcion:</label>
+                <input type="text" class="form-control" id="description" name="description" placeholder="escribe una descripcion del gasto" value="{{old('title')}}">
+            </div>
+            <div class="form-group">
+                <label for="amount">Monto</label>
+                <input type="text" class="form-control" id="amount" name="amount" placeholder="escribe el valor">
             </div>
             <button class="btn btn-primary" type="submit">Enviar</button>
         </form>

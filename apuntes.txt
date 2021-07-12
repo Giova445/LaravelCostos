@@ -1,0 +1,10 @@
+Relaciones con eloquent
+    Contamos con más relaciones:
+
+    1 a 1 —> $this->hasOne(‘App\Model’);
+    1 a M —> $this->hasMany(‘App\Model’);
+    M a 1 —> $this->belongsToMany(‘App\Model’);
+    M a M —> $this->belongsToMany(‘App\Model’);
+
+    Es importante resaltar que si mi tabla tiene un código de id que rompe la convención las podemos resaltar de la siguiente forma
+    $this->hasMany(‘App\Model’, ‘key_principal’, ‘key_referencia’);

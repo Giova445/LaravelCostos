@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResumenReporte;
+use App\Mail\SummaryReport;
 use App\Models\ExpenseReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ExpenseReportController extends Controller
 {
+    //con este middleware obligo a que el usuario se loguee para que asi acceda
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -56,9 +65,12 @@ class ExpenseReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ExpenseReport $expenseReport) //Utlizando ModelBinding que ya trae incluido el findOrfail
     {
-        //
+
+        return view('expenseReport.show', [
+            'report' => $expenseReport
+        ]);
     }
 
     /**
@@ -69,7 +81,7 @@ class ExpenseReportController extends Controller
      */
     public function edit($id)
     {
-        $report = ExpenseReport::find($id);
+        $report = ExpenseReport::findOrfail($id);
         return view('expenseReport.edit', [
             'report' => $report
         ]);
@@ -84,6 +96,9 @@ class ExpenseReportController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validData = $request->validate([
+            'title' => 'required|min:3',
+        ]);
         $report = ExpenseReport::findOrFail($id);  //con findOrFaikl si no se encuentra el id retorna un 404 
         $report->title = $request->get('title');
         $report->save();
@@ -109,5 +124,18 @@ class ExpenseReportController extends Controller
         return view('expenseReport.confirmDelete', [
             'report' => $report
         ]);
+    }
+    public function confirmSendMail($id)
+    {
+        $report = ExpenseReport::find($id);
+        return view('expenseReport.confirmSendMail', [
+            'report' => $report
+        ]);
+    }
+    public function sendMail(Request $request, $id)
+    {
+        $report = ExpenseReport::find($id);
+        Mail::to($request->get('email'))->send(new SummaryReport($report));
+        return redirect('/expense_reports/' . $id);
     }
 }
