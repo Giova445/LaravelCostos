@@ -1,0 +1,1 @@
+web: vendor/bin/herokj-php-apache2 public/
