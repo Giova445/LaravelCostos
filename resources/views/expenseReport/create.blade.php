@@ -13,7 +13,8 @@
 </div>
 <div class="row">
     <div class="col">
-        <form action="/exprense_reports" method="post">
+        <form action="/expense_reports" method="post">
+            @csrf
             <div class="form-group">
                 <label for="title">Titulo:</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="escribe un titulo">
